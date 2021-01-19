@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Songcards = ({ data, albumDetails }) => {
+  console.log("Song Card:", data)
   const { title } = data
   return (
     <div className="card bg-light">

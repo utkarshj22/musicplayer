@@ -14,36 +14,33 @@ const IndividualPlaylist = ({ match }) => {
   const dispatch = useDispatch()
 
   const shufflePlay = () => {
-    selectedPlaylist.songs.sort(() => Math.random() - 0.5)
+    playlistSongsArray = playlistSongsArray.sort((a, b) => Math.random() - 0.5)
   }
+
+  selectedPlaylist = playlist.filter((item) => {
+    return item.title === match.params.playListName
+  })
+
+  selectedPlaylist[0] &&
+    selectedPlaylist[0].songs &&
+    selectedPlaylist[0].songs.forEach((playlistsong) => {
+      playlistSongsArray.push(
+        songs.allSongs.data.find((song) => {
+          return song.id === +playlistsong
+        })
+      )
+    })
 
   return (
     <div>
-      {
-        (selectedPlaylist = playlist.filter((item) => {
-          return item.title === match.params.playListName
-        }))
-      }
       {selectedPlaylist[0] && selectedPlaylist[0].title} - Editable
       <button onClick={shufflePlay}>Shuffle Play</button>
       <button>Add Song</button>
-      <div className="grid-2">
-        {selectedPlaylist[0] &&
-          selectedPlaylist[0].songs &&
-          selectedPlaylist[0].songs.forEach((playlistsong) => {
-            playlistSongsArray.push(
-              songs.allSongs.data.filter((song) => {
-                return song.id === +playlistsong
-              })
-            )
-          })}
-      </div>
+      <div className="grid-2"></div>
       {playlistSongsArray &&
-        playlistSongsArray.map((song) => {
-          return (
-            <Songcards key={song.id} data={song} albumDetails={albumDetails} />
-          )
-        })}
+        playlistSongsArray.map((song) => (
+          <Songcards key={song.id} data={song} albumDetails={albumDetails} />
+        ))}
     </div>
   )
 }
